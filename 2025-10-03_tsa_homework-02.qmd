@@ -1,6 +1,7 @@
 ---
 title: "Timeseries Analysis: Homework-02"
 author: "E. Duke Chase"
+subtitle: "[Homework GitHub Repo](https://github.com/EDukeChase/2025-10-03_tsa_homework-02)"
 date: today
 ---
 
