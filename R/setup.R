@@ -11,6 +11,7 @@ library(knitr)              # Used for running R code in Quarto
 library(RColorBrewer)       # Color palettes to enable color-blind friendliness
 
 # --- Homework specific packages ---
+library(faraway)
 
 # --- Set seed for reproducibility ---
 set.seed(5027)

@@ -1,0 +1,52 @@
+---
+title: "Timeseries Analysis: Homework-02"
+author: "E. Duke Chase"
+date: today
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(here)
+source(here::here("R", "setup.R"))
+
+# Set key directory paths
+data_dir <- here::here("data")
+output_dir <- here::here("output")
+```
+
+# Problem 1
+For this problem, you will use the `psid` dataset in the `faraway` R package. More, to improve convergence of the models, create a new year variable where year is centered on 78 (e.g., I did "psid$year78=psid$year-78"). In this problem, you will be studying the factors such as age, education, and sex that are potentially predictive of income.
+
+```{r}
+
+```
+
+
+(1) Use visual(s) to explain why we should model `ln(income)` as the outcome instead of `income`. Note: in R, natural log is the function `log()`; thus, in the following I will use `log(income)` to indicate the natural log transformed values of income, and `log(income)` is the outcome you will be studying.
+(2) Create a visual(s) to explore possible relationships between the `age`, `educ`, and `sex` covariates and `log(income)`. Create at least one showing individual level `log(income)` changes over time and at least one showing changes over time in `log(income)` aggregated over individuals by another factor (e.g. mean `log(income)` group by a covariate). Briefly comment on what these reveal about linear mixed models that are reasonable for this data. As a second question, is it scientifically valid to use exploratory data analysis to justify your initial modeling strategy?
+(3) Now, use R to estimate a linear mixed model that includes age, education, sex as main effects and also includes a random intercept by person. Calculate and interpret the model’s ICC (you may use R functions to find the ICC).
+(4) In this question you will be estimating two nested models. First estimate a linear mixed model with `age`, `education`, `sex`, and `year78` (my name for the centered year variable) as main effects. In this first model, also include an interaction between `year78` and `sex` and a random intercept by person. Second, estimate this same model plus a random slope by person for `year78` (the second model is the first model + a random slope).
+    (a) Perform a hypothesis test to determine if including a random slope improved the model. Briefly describe the hypotheses, test statistic, p-value, and conclusion.
+    (b) For the model you determined was best in a. (with or without the random slopes), write its estimated functional form or mathematical equation, including specifying any random distributions and their parameters. You may use matrix notation or you may write out the model for a single $Y_{i, j}$ as long as you provide possible values of $i$ and $j$.
+
+
+# Problem 2:
+
+On Canvas is a simulated data set (`data_heart_rate.csv`) from what is known as a Repeated Measures Factorial Design. These types of studies are designed to focus on repeated measures of an outcome within combinations of categories, and do not have to include a longitudinal component. For example, in the heart rate data, each participant (SUBID) has their heart rate measured for two different sets of repeated measures (repeated across all levels of categorical variables): (1) Alt represents laboratory simulated low- versus high altitude environment, and (2) Cond is the subject’s condition relative to an exercise session; the three conditions are rest, immediately following exercise, or following a 30-minute delay.
+
+Before starting this problem, load the `lme4` and `lmerTest` R libraries into your R work space.
+
+(1) What is the researcher’s implied question(s)? That is, what relationship(s) are they studying?
+(2) Briefly explain why this isn’t a longitudinal data scenario. Also, briefly explain why any models, nonetheless, must account for non-independence within the observations (the rows of the data).
+(3) Briefly explain why using a linear mixed model where the only random effect is for the subject may not capture all the statistical dependencies in the data.
+(4) It is tempting (at least to me) to include random intercepts for each of subject, condition, and altitude as these represent all the repeated features of the data. However, this ignores the impact of the factor design on repeated measure where the categories are, by design, repeated within each subject. That is, condition and altitude are nested within each subject; thus, we need a random intercept for each $\text{subject} \times \text{condition}$ and a random intercept for each $\text{subject} \times \text{condition}$. Give a practical interpretation for what about the subjects’ responses these two additional random intercepts are capturing.
+(5) In this question you will be estimating two nested models. First, estimate a linear mixed model with altitude and condition as main effects, include a term for their interaction, and include a random intercept by subject. Next, fit a second model that is the same as the first except also include the two additional random intercepts described in (4). Below are code snippets I used to do this:
+
+mod1=lmer(Heart_Rate ~ Alt*Cond +(1|SUBID),data=YOUR_DATA_NAME)
+
+mod2=lmer(Heart_Rate ~ Alt*Cond +(1|SUBID)+(1|SUBID:Cond)+(1|SUBID:Alt), YOUR_DATA_NAME)
+
+(6) Now, generate a summary for and apply an ANOVA to the second model. I used R code: “summary(mod2) and anova(mod2)”. What does TYPE III in the ANOVA output mean? Notice, the pvalue for “Altlow” is different in the summary from the p-value in the ANOVA, which one is correct?
+(7) Generate and compare the summaries for the two models. Focusing on the “Fixed effects” part of the models’ outputs, what is the same and what is with respect to the estimates, standard errors, and degrees of freedom? How would these differences affect chance of making a Type I errors and/or power when making conclusions about the effect of altitude and/or condition on heart rate?
